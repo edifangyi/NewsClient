@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">"News Client "</string>
+    <string name="BtnTagText1">"首页"</string>
+    <string name="BtnTagText2">"新闻中心"</string>
+    <string name="BtnTagText3">"智慧服务"</string>
+    <string name="BtnTagText4">"政务"</string>
+    <string name="BtnTagText5">"设置"</string>
+    <string name="ContentTitleText1">"智慧北京"</string>
+    <string name="ContentTitleText2">"新闻"</string>
+    <string name="ContentTitleText3">"智慧服务"</string>
+    <string name="ContentTitleText4">"政务"</string>
+    <string name="ContentTitleText5">"设置"</string>
+</resources>

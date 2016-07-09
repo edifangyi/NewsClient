@@ -1,0 +1,18 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!--新手引导页-->
+    <dimen name="guide_btn_layout_marginBottom">65dp</dimen>
+    <dimen name="guide_point_layout_marginBottom">30dp</dimen>
+    <dimen name="guide_view_red_point">10dp</dimen>
+    <!--侧拉栏-->
+    <dimen name="slidingmenu_shadow_width">5dp</dimen>
+    <!--首页-->
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="btn_menu_layout_marginLeft">5dp</dimen>
+    <!--底部按钮-->
+    <dimen name="btn_tab_padding">5dp</dimen>
+    <dimen name="btn_tab_drawable_padding">3dp</dimen>
+
+</resources>

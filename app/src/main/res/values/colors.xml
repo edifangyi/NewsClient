@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorBtnTabText">#ffffff</color>
+
+    <color name="colorBtnTabTextPress">#EB0200</color>
+    <color name="colorContentTitleText">#ffffff</color>
+
+    <color name="colorLeftMenuTitle">#CE3D3A</color>
+</resources>
