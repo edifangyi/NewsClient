@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.fangyi.newsclient.MainActivity;
 import com.example.fangyi.newsclient.R;
 import com.example.fangyi.newsclient.base.BaseMenuDetailPager;
 import com.example.fangyi.newsclient.base.TabDetailPager;
 import com.example.fangyi.newsclient.domain.NewsData;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         btnNext = (ImageButton) view.findViewById(R.id.btn_next);
         btnFront = (ImageButton) view.findViewById(R.id.btn_front);
         ButterKnife.bind(this, view);
+
+
         return view;
     }
 
@@ -122,26 +126,9 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 
             @Override
             public void onPageSelected(int position) {
-                switch (position) {
+                setBtnVisibility(position);
+                setSlidngMenuTouch(position);
 
-                    case 0:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-                    case 1:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-                    case 2:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-
-                    default:
-                        if (position == mPagerList.size() - 1) {
-                            btnNext.setVisibility(View.GONE);
-                        } else {
-                            btnFront.setVisibility(View.VISIBLE);
-                            btnNext.setVisibility(View.VISIBLE);
-                        }
-                }
             }
 
             @Override
@@ -156,27 +143,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         tabLayout_1.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-
-                switch (position) {
-
-                    case 0:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-                    case 1:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-                    case 2:
-                        btnFront.setVisibility(View.GONE);
-                        break;
-
-                    default:
-                        if (position == mPagerList.size() - 1) {
-                            btnNext.setVisibility(View.GONE);
-                        } else {
-                            btnFront.setVisibility(View.VISIBLE);
-                            btnNext.setVisibility(View.VISIBLE);
-                        }
-                }
+                setBtnVisibility(position);
+                setSlidngMenuTouch(position);
             }
 
             @Override
@@ -184,8 +152,37 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 
             }
         });
+    }
 
+    /**
+     * 控制tab的btnNext btnFront显示隐藏
+     */
+    private void setBtnVisibility(int position) {
+        if (position < 3) {
+            btnFront.setVisibility(View.GONE);
+        } else if (position >= mPagerList.size() - 3) {
+            btnNext.setVisibility(View.GONE);
+        } else {
+            btnFront.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
+        }
+    }
 
+    /**
+     * 控制侧拉栏滑出
+     * 即在第一个页面可以滑出，在其他页面无法滑出
+     *
+     * @param position
+     */
+    private void setSlidngMenuTouch(int position) {
+        MainActivity mainUi = (MainActivity) mActivity;
+        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+
+        if (position == 0) {//只有在第一个页面(北京), 侧边栏才允许出来
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        } else {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
     }
 
     class MenuDetailAdapter extends PagerAdapter {

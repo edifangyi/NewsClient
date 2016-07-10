@@ -31,7 +31,6 @@ public class LeftMenuFragment extends BaseFragment {
 
     private ArrayList<NewsData.NewsMenuData> mMenuList;
     private MenuAdapter menuAdapter;
-    private int currentMenuDetailPager;
 
     @Override
     public View initViews() {

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * ViewPager 事件分发，请求父控件及祖宗控件是否拦截事件
+ * ViewPager 事件分发，请求父控件及祖宗控件是否拦截事件  暂时没用
  * true拦截，false不拦截
  * Created by FANGYI on 2016/7/6.
  */
