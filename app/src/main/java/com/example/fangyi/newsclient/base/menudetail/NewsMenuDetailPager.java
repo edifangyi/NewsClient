@@ -128,7 +128,6 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
             public void onPageSelected(int position) {
                 setBtnVisibility(position);
                 setSlidngMenuTouch(position);
-
             }
 
             @Override
@@ -139,12 +138,12 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 
         /**
          * SlidingTabLayout控制
+         *
          */
         tabLayout_1.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
                 setBtnVisibility(position);
-                setSlidngMenuTouch(position);
             }
 
             @Override

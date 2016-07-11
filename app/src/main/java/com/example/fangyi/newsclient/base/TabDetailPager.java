@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.fangyi.newsclient.R;
@@ -15,13 +15,14 @@ import com.example.fangyi.newsclient.domain.NewsData;
 import com.example.fangyi.newsclient.domain.TabData;
 import com.example.fangyi.newsclient.global.GlobalContants;
 import com.google.gson.Gson;
-import com.socks.library.KLog;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.Request;
 import com.yolanda.nohttp.rest.RequestQueue;
 import com.yolanda.nohttp.rest.Response;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +37,13 @@ public class TabDetailPager extends BaseMenuDetailPager {
     ViewPager vpNeswRolling;
     @BindView(R.id.lv_news_list)
     ListView lvNewsList;
-    private NewsData.NewsTabData mNewsTabData;
+    @BindView(R.id.tv_news_title)
+    TextView tvNewsTitle;//头条新闻的标题
+    private NewsData.NewsTabData mNewsTabData;//头条新闻的集合
+
     private String mUrl;
     private TabData mTabDetailData;
+    private ArrayList<TabData.TopNewsData> mTopNewsList;
 
     public TabDetailPager(Activity mActivity, NewsData.NewsTabData newsTabData) {
         super(mActivity);
@@ -56,11 +61,23 @@ public class TabDetailPager extends BaseMenuDetailPager {
     @Override
     public void initData() {
         getDataFromServer();
-        //没封装成功
-//        NohttpUtils nohttpUtils = new NohttpUtils();
-//        nohttpUtils.getDataFromServer(mUrl);
-//        String result = nohttpUtils.getResult();
-//        parseData(result);
+
+        vpNeswRolling.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tvNewsTitle.setText(mTopNewsList.get(position).title);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
@@ -76,36 +93,30 @@ public class TabDetailPager extends BaseMenuDetailPager {
         RequestQueue requestQueue = NoHttp.newRequestQueue();
         // 创建请求对象
         Request<String> request = NoHttp.createStringRequest(mUrl, RequestMethod.GET);
-        requestQueue.add(NOHTTP_WHAT_TEST, request, onResponseListener);
-    }
+        requestQueue.add(NOHTTP_WHAT_TEST, request, new OnResponseListener<String>() {
+            @Override
+            public void onStart(int what) {
 
-    /**
-     * 回调对象，接受请求结果
-     */
-    private OnResponseListener<String> onResponseListener = new OnResponseListener<String>() {
-        @Override
-        public void onStart(int what) {
-        }
+            }
 
-        @SuppressWarnings("unused")
-        @Override
-        public void onSucceed(int what, Response<String> response) {
-            if (what == NOHTTP_WHAT_TEST) {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
                 // 请求成功
                 String result = response.get();// 响应结果
                 parseData(result);
             }
-        }
 
-        @Override
-        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
-            Toast.makeText(mActivity, "请求失败", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
 
-        @Override
-        public void onFinish(int what) {
-        }
-    };
+            }
+
+            @Override
+            public void onFinish(int what) {
+
+            }
+        });
+    }
 
 
     /**
@@ -116,8 +127,12 @@ public class TabDetailPager extends BaseMenuDetailPager {
     public void parseData(String result) {
         Gson gson = new Gson();
         mTabDetailData = gson.fromJson(result, TabData.class);
-        KLog.e("mTabDetailData ==" + mTabDetailData);
+
+        mTopNewsList = mTabDetailData.data.topnews;
+
+        tvNewsTitle.setText(mTopNewsList.get(0).title);
         vpNeswRolling.setAdapter(new TopNewsAdapter());
+
     }
 
     /**
@@ -142,7 +157,7 @@ public class TabDetailPager extends BaseMenuDetailPager {
             image.setScaleType(ImageView.ScaleType.FIT_XY);//基于控件大小填充图片
 
             //Glide图片加载
-            String url = mTabDetailData.data.topnews.get(position).topimage;
+            String url = mTopNewsList.get(position).topimage;
             Glide.with(mActivity)
                     .load(url)
                     .centerCrop()

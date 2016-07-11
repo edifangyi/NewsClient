@@ -4,12 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.fangyi.newsclient.view.TopNewsRolldingViewPager
-        android:id="@+id/vp_nesw_rolling"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-    </com.example.fangyi.newsclient.view.TopNewsRolldingViewPager>
+        <com.example.fangyi.newsclient.view.TopNewsRolldingViewPager
+            android:id="@+id/vp_nesw_rolling"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.example.fangyi.newsclient.view.TopNewsRolldingViewPager>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#66000000"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_news_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorContentTitleText"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
     <ListView
         android:id="@+id/lv_news_list"

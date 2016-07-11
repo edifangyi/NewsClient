@@ -1,4 +1,4 @@
-package com.example.fangyi.newsclient;
+package com.example.fangyi.newsclient.utils;
 
 import android.app.Application;
 

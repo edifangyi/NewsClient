@@ -25,9 +25,12 @@ public class TopNewsRolldingViewPager extends ViewPager {
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        getParent().requestDisallowInterceptTouchEvent(true);// 不要拦截,
+
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 getParent().requestDisallowInterceptTouchEvent(true);// 不要拦截,
+
                 // 这样是为了保证ACTION_MOVE调用
                 startX = (int) ev.getRawX();
                 startY = (int) ev.getRawY();
@@ -58,6 +61,9 @@ public class TopNewsRolldingViewPager extends ViewPager {
                 break;
         }
 
+//        getParent().requestDisallowInterceptTouchEvent(true);
         return super.dispatchTouchEvent(ev);
     }
+
+
 }

@@ -32,7 +32,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private void initSlidingMenu() {
         setBehindContentView(R.layout.left_menu);//设置侧边栏布局
         slidingMenu = getSlidingMenu();//获取侧边栏对象
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//设置侧边拖拽
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);//设置侧边拖拽
 
         slidingMenu.setBehindOffset(700);//设置预留屏幕宽度
 //        slidingMenu.setBehindWidth(500);//设置侧边栏宽度-像素
