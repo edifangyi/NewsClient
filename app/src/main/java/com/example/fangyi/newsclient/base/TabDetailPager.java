@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * 页签详情页
@@ -36,14 +38,18 @@ public class TabDetailPager extends BaseMenuDetailPager {
     @BindView(R.id.vp_nesw_rolling)
     ViewPager vpNeswRolling;
     @BindView(R.id.lv_news_list)
-    ListView lvNewsList;
+    ListView lvNewsList;//新闻列表
     @BindView(R.id.tv_news_title)
     TextView tvNewsTitle;//头条新闻的标题
-    private NewsData.NewsTabData mNewsTabData;//头条新闻的集合
+    @BindView(R.id.ci_news_indicator)
+    CircleIndicator ciNewsIndicator;//头条新闻的ViewPager指示器
 
     private String mUrl;
     private TabData mTabDetailData;
-    private ArrayList<TabData.TopNewsData> mTopNewsList;
+
+    private NewsData.NewsTabData mNewsTabData;//头条新闻的集合
+    private ArrayList<TabData.TopNewsData> mTopNewsList;//头条新闻数据集合
+    private ArrayList<TabData.TabNewsData> mNewsList;//新闻列表数据集合
 
     public TabDetailPager(Activity mActivity, NewsData.NewsTabData newsTabData) {
         super(mActivity);
@@ -129,9 +135,20 @@ public class TabDetailPager extends BaseMenuDetailPager {
         mTabDetailData = gson.fromJson(result, TabData.class);
 
         mTopNewsList = mTabDetailData.data.topnews;
+        mNewsList = mTabDetailData.data.news;
 
-        tvNewsTitle.setText(mTopNewsList.get(0).title);
-        vpNeswRolling.setAdapter(new TopNewsAdapter());
+        if (mTopNewsList != null) {
+            tvNewsTitle.setText(mTopNewsList.get(0).title);//设置头条新闻标题
+
+            vpNeswRolling.setAdapter(new TopNewsAdapter());
+            ciNewsIndicator.setViewPager(vpNeswRolling);//头条新闻ViewPager指示器
+        }
+
+        if (mNewsList != null) {
+            lvNewsList.setAdapter(new NewsAdapter());
+
+        }
+
 
     }
 
@@ -171,6 +188,36 @@ public class TabDetailPager extends BaseMenuDetailPager {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+    }
+
+
+    /**
+     * 新闻列表适配器
+     */
+    class NewsAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mNewsList.size();
+        }
+
+        @Override
+        public TabData.TabNewsData getItem(int position) {
+            return mNewsList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+
+            }
+            return null;
         }
     }
 
