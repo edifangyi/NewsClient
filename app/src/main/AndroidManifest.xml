@@ -27,6 +27,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".GuideActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".NewsDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by FANGYI on 2016/7/12.
  */
 
-public class RefreshListView extends ListView implements AbsListView.OnScrollListener {
+public class RefreshListView extends ListView implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
 
     private static final int STATE_PULL_REFRESH = 0;// 下拉刷新
     private static final int STATE_RELEASE_REFRESH = 1;// 松开刷新
@@ -274,7 +275,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                 || scrollState == SCROLL_STATE_FLING) {
 
             if (getLastVisiblePosition() == getCount() - 1 && !isLoadingMore) {// 滑动到最后
-                System.out.println("到底了.....");
                 mFooterView.setPadding(0, 0, 0, 0);// 显示
                 setSelection(getCount() - 1);// 改变listview显示位置
 
@@ -292,6 +292,26 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
      */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+
+    /**
+     * 重写setOnItemClickListener方法，直接-2
+     */
+    OnItemClickListener mItemClickListener;
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        super.setOnItemClickListener(this);
+        mItemClickListener = listener;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mItemClickListener != null) {
+            mItemClickListener.onItemClick(parent, view, position - getHeaderViewsCount(), id);
+        }
 
     }
 }

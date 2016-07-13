@@ -1,24 +1,30 @@
 package com.example.fangyi.newsclient.base;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.fangyi.newsclient.NewsDetailActivity;
 import com.example.fangyi.newsclient.R;
 import com.example.fangyi.newsclient.domain.NewsData;
 import com.example.fangyi.newsclient.domain.TabData;
 import com.example.fangyi.newsclient.global.GlobalContants;
+import com.example.fangyi.newsclient.utils.PrefUtils;
 import com.example.fangyi.newsclient.view.RefreshListView;
 import com.example.fangyi.newsclient.view.TopNewsRolldingViewPager;
 import com.google.gson.Gson;
+import com.socks.library.KLog;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
@@ -74,7 +80,6 @@ public class TabDetailPager extends BaseMenuDetailPager {
 
         lvNewsList.addHeaderView(headerView);//将头条新闻以头布局的形式加给ListView
 
-
         return view;
     }
 
@@ -117,6 +122,51 @@ public class TabDetailPager extends BaseMenuDetailPager {
                 }
             }
         });
+
+        //设置新闻列表点击事件
+        lvNewsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                setReadState(view, position);//设置已读状态
+
+                //跳转新闻详情页
+                Intent intent = new Intent().setClass(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", mNewsList.get(position).url);
+                mActivity.startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * 设置已读状态
+     *
+     * @param view
+     * @param position
+     */
+    private void setReadState(View view, int position) {
+        KLog.e("被点击：" + position);
+        //在本地记录已读状态
+        String ids = PrefUtils.getString(mActivity, "read_ids", "");
+        String readId = mNewsList.get(position).id;
+        if (!ids.contains(readId)) {
+            ids = ids + readId + ",";
+            PrefUtils.setString(mActivity, "read_ids", ids);
+        }
+//                newsAdapter.notifyDataSetChanged();
+        changReadState(view);//实现局部界面刷新，这个View就是被点击的item布局对象
+    }
+
+    /**
+     * 改变已读新闻的颜色
+     *
+     * @param view
+     */
+    private void changReadState(View view) {
+        TextView tvNewsListTitle = (TextView) view.findViewById(R.id.tv_news_list_title);
+        tvNewsListTitle.setTextColor(Color.GRAY);
+
     }
 
 
@@ -321,6 +371,15 @@ public class TabDetailPager extends BaseMenuDetailPager {
                     .placeholder(R.mipmap.pic_item_list_default)
                     .crossFade()
                     .into(holder.ivNewsPic);
+
+            //用changReadState()方法，比下面的方法节约性能
+//            String ids = PrefUtils.getString(mActivity, "read_ids", "");
+//
+//            if (ids.contains(getItem(position).id)) {
+//                holder.tvNewsListTitle.setTextColor(Color.GRAY);
+//            } else {
+//                holder.tvNewsListTitle.setTextColor(Color.BLACK);
+//            }
 
             return convertView;
         }
