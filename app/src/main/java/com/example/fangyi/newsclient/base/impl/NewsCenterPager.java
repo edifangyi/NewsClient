@@ -1,7 +1,7 @@
 package com.example.fangyi.newsclient.base.impl;
 
 import android.app.Activity;
-import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.example.fangyi.newsclient.MainActivity;
 import com.example.fangyi.newsclient.R;
@@ -13,6 +13,8 @@ import com.example.fangyi.newsclient.base.menudetail.PhotoMenuDetailPager;
 import com.example.fangyi.newsclient.base.menudetail.TopicMenuDetailPager;
 import com.example.fangyi.newsclient.domain.NewsData;
 import com.example.fangyi.newsclient.fragment.LeftMenuFragment;
+import com.example.fangyi.newsclient.global.GlobalContants;
+import com.example.fangyi.newsclient.utils.CacheUtils;
 import com.google.gson.Gson;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
@@ -24,6 +26,7 @@ import com.yolanda.nohttp.rest.Response;
 import java.util.ArrayList;
 
 import static com.example.fangyi.newsclient.global.GlobalContants.CATEGORIES_URL;
+
 
 /**
  * 首页实现
@@ -44,7 +47,14 @@ public class NewsCenterPager extends BasePager {
         tvTitle.setText(R.string.ContentTitleText2);
         setSlidingMenuEnable(true);//开启侧边栏
 
-        getDataFromServer();//从服务器获取数据
+        String cache = CacheUtils.getCache(GlobalContants.CATEGORIES_URL,
+                mActivity);
+
+        if (!TextUtils.isEmpty(cache)) {// 如果缓存存在,直接解析数据, 无需访问网路
+            parseData(cache);
+        }
+
+        getDataFromServer();// 不管有没有缓存, 都获取最新数据, 保证数据最新
 
     }
 
@@ -79,12 +89,15 @@ public class NewsCenterPager extends BasePager {
                 // 请求成功
                 String result = response.get();// 响应结果
                 parseData(result);
+                // 设置缓存
+                CacheUtils.setCache(CATEGORIES_URL,
+                        result, mActivity);
             }
         }
 
         @Override
         public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
-            Toast.makeText(mActivity, "请求失败", Toast.LENGTH_SHORT).show();
+
         }
 
         @Override

@@ -3,9 +3,12 @@ package com.example.fangyi.newsclient.base;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +23,7 @@ import com.example.fangyi.newsclient.R;
 import com.example.fangyi.newsclient.domain.NewsData;
 import com.example.fangyi.newsclient.domain.TabData;
 import com.example.fangyi.newsclient.global.GlobalContants;
+import com.example.fangyi.newsclient.utils.CacheUtils;
 import com.example.fangyi.newsclient.utils.PrefUtils;
 import com.example.fangyi.newsclient.view.RefreshListView;
 import com.example.fangyi.newsclient.view.TopNewsRolldingViewPager;
@@ -61,6 +65,8 @@ public class TabDetailPager extends BaseMenuDetailPager {
     private ArrayList<TabData.TabNewsData> mNewsList;//新闻列表数据集合
     private NewsAdapter newsAdapter;
 
+    private Handler handler;
+
     public TabDetailPager(Activity mActivity, NewsData.NewsTabData newsTabData) {
         super(mActivity);
         mNewsTabData = newsTabData;
@@ -85,7 +91,15 @@ public class TabDetailPager extends BaseMenuDetailPager {
 
     @Override
     public void initData() {
+
+
+        String cache = CacheUtils.getCache(mUrl, mActivity);
+
+        if (!TextUtils.isEmpty(cache)) {
+            parseData(cache, false);
+        }
         getDataFromServer();
+
 
         //设置头条新闻标题监听
         vpNeswRolling.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -194,6 +208,8 @@ public class TabDetailPager extends BaseMenuDetailPager {
                 String result = response.get();// 响应结果
                 parseData(result, false);//解析数据，并且不会下载下一页
                 lvNewsList.onRefreshComplete(true);//隐藏下拉刷新控件
+                // 设置缓存
+                CacheUtils.setCache(mUrl, result, mActivity);
             }
 
             @Override
@@ -227,6 +243,7 @@ public class TabDetailPager extends BaseMenuDetailPager {
                 String result = response.get();// 响应结果
                 parseData(result, true);//加载下一页
                 lvNewsList.onRefreshCompleteOfFooter(true);//隐藏脚布局刷控件
+
             }
 
             @Override
@@ -268,6 +285,26 @@ public class TabDetailPager extends BaseMenuDetailPager {
                 newsAdapter = new NewsAdapter();
                 lvNewsList.setAdapter(newsAdapter);
             }
+
+            //自动轮播条
+            if (handler == null) {
+                handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        int currentItem = vpNeswRolling.getCurrentItem();
+                        if (currentItem < mTopNewsList.size() - 1) {
+                            currentItem++;
+                        } else {
+                            currentItem = 0;
+                        }
+
+                        vpNeswRolling.setCurrentItem(currentItem);//切换到下一个页面
+                        handler.sendEmptyMessageDelayed(0, 3000);//继续延时3秒后发送消息
+                    }
+                };
+                handler.sendEmptyMessageDelayed(0, 3000);//演示3秒后发送消息
+            }
+
         } else {//如果是加载下一页，需要将数据追加给原来的集合
             ArrayList<TabData.TabNewsData> moreNews = mTabDetailData.data.news;
             mNewsList.addAll(moreNews);//第一页数据还在，追加第二页
@@ -320,12 +357,40 @@ public class TabDetailPager extends BaseMenuDetailPager {
                     .crossFade()
                     .into(image);
             container.addView(image);
+
+            image.setOnTouchListener(new OnTopNewsTouchListener());//设置触摸监听
             return image;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+    }
+
+
+    /**
+     * 头条新闻的触摸监听
+     */
+    class OnTopNewsTouchListener implements View.OnTouchListener {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN://按下
+                    handler.removeCallbacksAndMessages(null);//删除Handler中的所有消息
+                    break;
+
+                case MotionEvent.ACTION_UP://抬起
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+
+                case MotionEvent.ACTION_CANCEL://事件取消
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+            }
+
+            return true;
         }
     }
 
@@ -373,13 +438,13 @@ public class TabDetailPager extends BaseMenuDetailPager {
                     .into(holder.ivNewsPic);
 
             //用changReadState()方法，比下面的方法节约性能
-//            String ids = PrefUtils.getString(mActivity, "read_ids", "");
-//
-//            if (ids.contains(getItem(position).id)) {
-//                holder.tvNewsListTitle.setTextColor(Color.GRAY);
-//            } else {
-//                holder.tvNewsListTitle.setTextColor(Color.BLACK);
-//            }
+            String ids = PrefUtils.getString(mActivity, "read_ids", "");
+
+            if (ids.contains(getItem(position).id)) {
+                holder.tvNewsListTitle.setTextColor(Color.GRAY);
+            } else {
+                holder.tvNewsListTitle.setTextColor(Color.BLACK);
+            }
 
             return convertView;
         }
