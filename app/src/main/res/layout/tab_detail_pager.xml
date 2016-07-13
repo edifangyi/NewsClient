@@ -5,49 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
 
-        <com.example.fangyi.newsclient.view.TopNewsRolldingViewPager
-            android:id="@+id/vp_nesw_rolling"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.example.fangyi.newsclient.view.TopNewsRolldingViewPager>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#66000000"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_news_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorContentTitleText"
-                android:textSize="16sp" />
-
-            <me.relex.circleindicator.CircleIndicator
-
-                android:id="@+id/ci_news_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-
-    <ListView
+    <com.example.fangyi.newsclient.view.RefreshListView
         android:id="@+id/lv_news_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"></ListView>
+        android:layout_height="match_parent">
+
+    </com.example.fangyi.newsclient.view.RefreshListView>
 
 </LinearLayout>
