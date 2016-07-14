@@ -29,6 +29,8 @@ public class BasePager {
     public FrameLayout flContent;//内容
     @BindView(R.id.btn_menu)
     public ImageButton btnMenu;//菜单按钮
+    @BindView(R.id.btn_photo)
+    public ImageButton btnPhoto;//组图切换按钮
 
     public BasePager(Activity Activity) {
         this.mActivity = Activity;
@@ -59,6 +61,7 @@ public class BasePager {
 
     /**
      * 设置侧边栏开启或关闭
+     *
      * @param enable
      */
     public void setSlidingMenuEnable(boolean enable) {
@@ -66,7 +69,7 @@ public class BasePager {
         SlidingMenu slidingMenu = mainUi.getSlidingMenu();
         if (enable) {
             slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        }else {
+        } else {
             slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         }
     }

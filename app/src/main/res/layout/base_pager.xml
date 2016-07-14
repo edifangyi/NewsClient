@@ -27,6 +27,17 @@
             android:text="@string/ContentTitleText1"
             android:textColor="@color/colorContentTitleText"
             android:textSize="@dimen/title_text_size" />
+
+        <ImageButton
+            android:id="@+id/btn_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:src="@mipmap/icon_pic_grid_type"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <FrameLayout

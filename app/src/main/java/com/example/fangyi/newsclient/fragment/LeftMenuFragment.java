@@ -27,7 +27,7 @@ public class LeftMenuFragment extends BaseFragment {
     @BindView(R.id.lv_left_menu)
     ListView lvLeftMenu;
 
-    private int mCurrentPos;// 当前被点击的菜单项
+    private int mCurrentPos = 0;// 当前被点击的菜单项
 
     private ArrayList<NewsData.NewsMenuData> mMenuList;
     private MenuAdapter menuAdapter;
@@ -115,6 +115,7 @@ public class LeftMenuFragment extends BaseFragment {
             return view;
         }
     }
+
 
     /**
      * 设置网络数据

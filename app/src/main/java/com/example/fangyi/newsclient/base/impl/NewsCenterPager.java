@@ -2,6 +2,7 @@ package com.example.fangyi.newsclient.base.impl;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.example.fangyi.newsclient.MainActivity;
 import com.example.fangyi.newsclient.R;
@@ -126,7 +127,7 @@ public class NewsCenterPager extends BasePager {
         menuDetailPagers = new ArrayList<>();
         menuDetailPagers.add(new NewsMenuDetailPager(mActivity, mNewsData.data.get(0).children));
         menuDetailPagers.add(new TopicMenuDetailPager(mActivity));
-        menuDetailPagers.add(new PhotoMenuDetailPager(mActivity));
+        menuDetailPagers.add(new PhotoMenuDetailPager(mActivity, btnPhoto));
         menuDetailPagers.add(new InteractMenuDetailPager(mActivity));
 
         //设置 菜单详情页-新闻 为默认当前页
@@ -144,6 +145,14 @@ public class NewsCenterPager extends BasePager {
         flContent.addView(pager.mRootView);// 将菜单详情页的布局设置给帧布局
         tvTitle.setText(mNewsData.data.get(position).title);//设置当前页的标题
         pager.initData();//初始化当前页面的数据
+
+
+
+        if (pager instanceof PhotoMenuDetailPager) {
+            btnPhoto.setVisibility(View.VISIBLE);
+        } else {
+            btnPhoto.setVisibility(View.GONE);
+        }
     }
 
 

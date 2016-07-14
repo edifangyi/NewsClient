@@ -52,7 +52,6 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         btnFront = (ImageButton) view.findViewById(R.id.btn_front);
         ButterKnife.bind(this, view);
 
-
         return view;
     }
 
