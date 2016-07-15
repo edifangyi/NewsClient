@@ -19,4 +19,5 @@
 - [Glide](https://github.com/bumptech/glide)：Android开源图片加载框架.
 - [ShareSDK](http://www.mob.com/)：包含“社会化分享组件”“社会化登录组件”“第三方评论和赞”三大模块，并有详尽的数据统计后台，助力移动开发者接入第三方平台实现快速成长.
 
-
+## 技术点 ##
+- 多层ViewPager触摸控制
