@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.fangyi.newsclient.utils.DensityUtils;
 import com.example.fangyi.newsclient.utils.PrefUtils;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class GuideActivity extends AppCompatActivity {
             View point = new View(this);
             point.setBackgroundResource(R.drawable.shape_point_gray);//设置引导页默认圆点
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dp2px(this, 10), DensityUtils.dp2px(this, 10));
             if (i > 0) {
                 params.leftMargin = 10;//设置圆点间隔
             }
