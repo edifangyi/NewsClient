@@ -15,11 +15,11 @@ public class MainActivity extends SlidingFragmentActivity {
     private static final String FRAGMENT_CONTENT = "fragment_content";
 
     private SlidingMenu slidingMenu;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         initSlidingMenu();
@@ -34,7 +34,9 @@ public class MainActivity extends SlidingFragmentActivity {
         slidingMenu = getSlidingMenu();//获取侧边栏对象
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);//设置侧边拖拽
 
-        slidingMenu.setBehindOffset(700);//设置预留屏幕宽度
+        int width = getWindowManager().getDefaultDisplay().getWidth();//获取屏幕宽度，代码适配
+
+        slidingMenu.setBehindOffset(width * 200 / 320);//设置预留屏幕宽度
 //        slidingMenu.setBehindWidth(500);//设置侧边栏宽度-像素
 //        slidingMenu.setShadowDrawable(R.drawable.shape_left_menu_shadow);//设置分割线资源
 //        slidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);//给分割线设置宽度
@@ -47,8 +49,8 @@ public class MainActivity extends SlidingFragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();//开启事务
-        transaction.replace(R.id.left_menu, new LeftMenuFragment(),FRAGMENT_LEFT_MENU);//用fragment替换framelayout
-        transaction.replace(R.id.activity_main, new ContentFragment(),FRAGMENT_CONTENT);
+        transaction.replace(R.id.left_menu, new LeftMenuFragment(), FRAGMENT_LEFT_MENU);//用fragment替换framelayout
+        transaction.replace(R.id.activity_main, new ContentFragment(), FRAGMENT_CONTENT);
         transaction.commit();//提交事务
 
         // Fragment leftMenuFragment = fm.findFragmentByTag(FRAGMENT_LEFT_MENU);//打的标记找fragment
@@ -57,6 +59,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
     /**
      * 获取侧边栏Fragment
+     *
      * @return
      */
     public LeftMenuFragment getLeftMenuFragment() {
@@ -66,7 +69,7 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     /**
-     *     获取主页面fragment
+     * 获取主页面fragment
      */
 
     public ContentFragment getContentFragment() {
