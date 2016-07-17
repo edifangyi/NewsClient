@@ -2,8 +2,7 @@
 # NewsClient #
 
 ## 项目介绍 ##
-
-新闻客户端
+基于黑马教学视频编写的新闻客户端，替换和使用了新的框架。
 
 
 ## 使用第三方框架 ##
@@ -20,4 +19,17 @@
 - [ShareSDK](http://www.mob.com/)：包含“社会化分享组件”“社会化登录组件”“第三方评论和赞”三大模块，并有详尽的数据统计后台，助力移动开发者接入第三方平台实现快速成长.
 
 ## 技术点 ##
-- 多层ViewPager触摸控制
+- 多层 ViewPager 触摸控制
+- RecyclerView 和 CardView 的使用
+
+## UI结构 ##
+
+<img src="http://ww3.sinaimg.cn/large/648b709cjw1f5x6a3kyhzj21kw19ttjb.jpg" width = "600" alt="图片名称" align=center />
+
+## UI ##
+
+<img src="http://ww2.sinaimg.cn/large/648b709cjw1f5x5zn9v50j20u01hcdsk.jpg" width = "300" alt="图片名称" align=center />
+<img src="http://ww1.sinaimg.cn/large/648b709cjw1f5x5zvyrbqj20u01hcgzy.jpg" width = "300" alt="图片名称" align=center />
+
+<img src="http://ww1.sinaimg.cn/large/648b709cjw1f5x5yfrbatj20u01hc7l6.jpg" width = "300" alt="图片名称" align=center />
+<img src="http://ww1.sinaimg.cn/large/648b709cjw1f5x63p0h1wj20u01hctky.jpg" width = "300" alt="图片名称" align=center />
